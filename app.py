@@ -21,16 +21,25 @@ def communicate():
 
     st.session_state["user_input"] = ""  # 入力欄を消去
 
-# ユーザーインターフェイスの構築
-st.title("My AI Assistant")
-st.write("ChatGPT APIを使ったチャットボットです。")
+# チャットメッセージのスクロール可能なコンテナを作成
+with st.container():
+    st.markdown("""
+        <style>
+        .chat-container {
+            height: 600px;  # 高さを調整可能
+            overflow-y: scroll;
+        }
+        </style>
+        <div class="chat-container">
+    """, unsafe_allow_html=True)
 
-# チャットメッセージの表示
-if st.session_state["messages"]:
-    messages = st.session_state["messages"]
-    for message in messages:  # メッセージを上から下に表示
-        speaker = "🙂" if message["role"] == "user" else "🤖"
-        st.write(speaker + ": " + message["content"])
+    if st.session_state["messages"]:
+        messages = st.session_state["messages"]
+        for message in messages:  # メッセージを上から下に表示
+            speaker = "🙂" if message["role"] == "user" else "🤖"
+            st.write(speaker + ": " + message["content"])
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # ユーザー入力
 user_input = st.text_input("メッセージを入力してください。", key="user_input", on_change=communicate)
